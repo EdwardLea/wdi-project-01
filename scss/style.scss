@@ -1,5 +1,32 @@
 $color: peachpuff;
 
+*{
+  box-sizing: border-box;
+}
+
 h1 {
   color: $color;
+}
+
+.playerBoard > div, .computerBoard > div {
+  width: 50px;
+  height: 50px;
+  background: #eee;
+  border: black 1px solid;
+}
+
+.gameBoard {
+  display: flex;
+  justify-content: space-around;
+}
+
+.gameBoard > div {
+  width: 500px;
+  height: 500px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+div.boat {
+  background: #bbb;
 }
