@@ -5,6 +5,7 @@ $(() => {
   let compHits = 0
   let playerHits = 0
   let selectedBoat = ''
+  let board = ''
   const boatsInPlay = []
   const orientation = ['vertical','horizontial']
   const boats = [
@@ -124,10 +125,22 @@ $(() => {
       }
     }
     console.log(boatArray)
+    player ? board = $grid1 : board = $grid2
 
     // validation function
-    // selectionValidation (boatArray, player)
-    // check boat array vertical condition
+    if(selectionValidation(boatArray, board, boatLength, player)){
+      boatArray.forEach(el => {
+        board.eq(el).addClass('boat')
+      })
+      return true
+    } else {
+      return false
+    }
+  }
+
+
+  // validation function to check if selected element is acceptable
+  function selectionValidation (boatArray, board, boatLength, player){
     if((boatArray.some(v => v < 0 || v > ((boardWidth * boardWidth)-1)))){
       console.log('not valid space 1')
       return false
@@ -148,11 +161,8 @@ $(() => {
         }
       }
       console.log('valid space')
-      // Add boat class to each element in boatArray
 
-      boatArray.forEach(el => {
-        $grid1.eq(el).addClass('boat')
-      })
+
 
       // boats.find(boat => boat.name === type).length
       // carried logic relating to boats already applied to the computer board
@@ -166,14 +176,14 @@ $(() => {
         }
       }
       console.log('valid space')
+
       // Add boat class to each element in boatArray
 
-      boatArray.forEach(el => {
-        $grid2.eq(el).addClass('boat')
-      })
+
     }
     return true
   }
+
 
   // check if players click is located on a boat
   function checkForHit(e){
