@@ -12,7 +12,7 @@ $(() => {
     {name: 'carrier',
     length: 5,
     compPlaced: false,
-    playerPlaced: true,
+    playerPlaced: false,
     compHits: 0,
     playerHits: 0,
     compSunk: false,
@@ -51,6 +51,8 @@ $(() => {
     playerSunk: false},
   ]
 
+  console.log(boats)
+
   const boatsArray = ['Carrier', 'Battleship', 'Cruiser', 'Submarine', 'Destroyer']
   const boatLengths = [5, 4, 3, 3, 2]
 
@@ -72,9 +74,6 @@ $(() => {
   }
   const $grid2 = $computerBoard.find('div')
 
-  // adding value attribute to each div
-
-
   // Functions--------------------------------------------------------------------
 
   // function to randomly generate number for placement of ships and selecting hits
@@ -86,12 +85,12 @@ $(() => {
   // function to add computers boats to board
   function computerBoatPos(){
     boats.forEach((boat) => {
-      while (!boat.placed){
+      while (!boat.compPlaced){
         const boatIndex = getRandomNumber(0, boardWidth*boardWidth)
         const type = boat.name
         const direction = orientation[getRandomNumber(0,1)]
         const player = false
-        boat.placed = addBoat(boatIndex,type, direction, player)
+        boat.compPlaced = addBoat(boatIndex,type, direction, player)
       }
     })
   }
@@ -103,23 +102,29 @@ $(() => {
     const boatIndex = $grid1.index($(e.target))
     const type = selectedBoat
     if(boats.find(boat => boat.name === type).playerPlaced){
-      alert('place again?')
+      console.log('place again?')
+      $(`.${type}`).removeClass('boat')
+      $(`.${type}`).removeClass(`${type}`)
     }
     const direction = 'vertical'
     addBoat(boatIndex, type, direction, true)
+
+    console.log(boats)
+    console.log(readyToPlay())
   }
 
-
-
+  // function to add boats to boards. Checks for an clashes before adding boat class
   function addBoat(boatIndex, type, direction, player){
     const boatArray = []
     const boatLength = boats.find(boat => boat.name === type).length
-    // creates boar array based on clicked position and orientation
+    // creates boat array based on clicked position and orientation
     if(direction === 'horizontial'){
+      // **could use forEach
       for (let i = 0 ; i < boatLength ; i++){
         boatArray.push(boatIndex + i)
       }
     } else if (direction === 'vertical') {
+      // **could use forEach
       for (let i = 0 ; i < boatLength ; i++){
         boatArray.push(boatIndex + (boardWidth * i))
       }
@@ -127,63 +132,43 @@ $(() => {
     console.log(boatArray)
     player ? board = $grid1 : board = $grid2
 
-    // validation function
+    // add class to boat elements based on validation result
     if(selectionValidation(boatArray, board, boatLength, player)){
       boatArray.forEach(el => {
         board.eq(el).addClass('boat')
+        board.eq(el).addClass(`${type}`)
       })
+      if(player){
+        boats.find(boat => boat.name === type).playerPlaced = true
+      }
       return true
     } else {
       return false
     }
   }
 
-
   // validation function to check if selected element is acceptable
   function selectionValidation (boatArray, board, boatLength, player){
+    // check boat array vertical conditions
     if((boatArray.some(v => v < 0 || v > ((boardWidth * boardWidth)-1)))){
-      console.log('not valid space 1')
+      console.log('vertcial edge clash')
       return false
     }
-    // check boat array horizontial condition
+    // check boat array horizontial conditions
     if((boatArray.some(v => v % boardWidth === 0) && (boatArray.some(v => v % boardWidth === (boardWidth - 1))))){
-      console.log('not valid space 1')
+      console.log('horizontial edge clash')
       return false
     }
-
-    // carried logic relating to boats already applied to the player board
-    if(player){
-      for (let i = 0 ; i < boatLength ; i++){
-        console.log()
-        if($grid1.eq(boatArray[i]).hasClass('boat')){
-          console.log('has a class already')
-          return false
-        }
+    // carried logic relating to boats already applied to the player board** could use forEach
+    for (let i = 0 ; i < boatLength ; i++){
+      if(board.eq(boatArray[i]).hasClass('boat')){
+        console.log('clashes with existing boat')
+        return false
       }
-      console.log('valid space')
-
-
-
-      // boats.find(boat => boat.name === type).length
-      // carried logic relating to boats already applied to the computer board
-    } else {
-      // check if any element has class of boatArray
-      for (let i = 0 ; i < boatLength ; i++){
-        console.log()
-        if($grid2.eq(boatArray[i]).hasClass('boat')){
-          console.log('has a class already')
-          return false
-        }
-      }
-      console.log('valid space')
-
-      // Add boat class to each element in boatArray
-
-
     }
+    console.log('valid space')
     return true
   }
-
 
   // check if players click is located on a boat
   function checkForHit(e){
@@ -198,6 +183,14 @@ $(() => {
     // increment number of player hits
 
     checkForWin()
+  }
+
+  function readyToPlay() {
+    console.log(boats.every(boat => {
+      // console.log(boat.playerPlaced)
+      boat.playerPlaced === true
+    })
+    )
   }
 
   // function for computer to pick position on grid and check if match takes place
@@ -231,22 +224,16 @@ $(() => {
     }
   }
 
-
-
   function addType(e){
     selectedBoat = e.target.dataset.boat
     console.log(selectedBoat)
   }
 
-
-
+  // Event Listeners------------------------------------------------------------
 
   $grid1.on('click', addPlayerBoat)
   $grid2.on('click', checkForHit)
   $type.on('click', addType)
-
-
-
 
 
 
