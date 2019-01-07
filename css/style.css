@@ -4,21 +4,43 @@
 h1 {
   color: peachpuff; }
 
-.playerBoard > div, .computerBoard > div {
-  width: 50px;
-  height: 50px;
-  background: #eee;
-  border: black 1px solid; }
-
-.gameBoard {
+nav {
   display: flex;
   justify-content: space-around; }
 
-.gameBoard > div {
+.player-board > div, .computer-board > div {
+  width: 10%;
+  height: 10%;
+  background: #eee;
+  border: black 1px solid; }
+
+.game-board {
+  display: flex;
+  justify-content: space-around; }
+
+.computer-board, .player-board {
   width: 500px;
   height: 500px;
   display: flex;
   flex-wrap: wrap; }
+
+.selectors {
+  display: flex;
+  justify-content: space-around; }
+
+.selected-boat {
+  border: black 1px solid; }
+
+.computer-ships {
+  display: flex;
+  justify-content: space-between; }
+  .computer-ships div {
+    height: 50px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #eee; }
 
 div.boat {
   background: #bbb; }
@@ -31,5 +53,17 @@ div.miss {
 
 div.sunk {
   background: black; }
+
+.boat-cats {
+  display: flex;
+  justify-content: space-between; }
+
+.boat-cats > div {
+  height: 50px;
+  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eee; }
 
 /*# sourceMappingURL=style.css.map */

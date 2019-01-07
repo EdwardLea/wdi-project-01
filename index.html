@@ -8,43 +8,75 @@
   <script src="js/app.js" charset="utf-8"></script>
 </head>
 <body>
-  <h1>Project1: The Game</h1>
   <header>
-
+    <h1>Battleships</h1>
+    <nav>
+      <button class = "instructions-button">Instructions</button>
+      <button class = "reset-game">Reset</button>
+    </nav>
+    <div class="instructions">
+      <h2>Instructions</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
   </header>
   <main>
-    <div class="gameBoard">
-      <div class="playerBoard">
+    <div class="game-board">
+      <div class="player-area">
 
+        <div class="player-board">
+
+        </div>
+        <div class="input-area">
+          <div class="boat-cats">
+            <div class="boat-type carrier" data-boat = "carrier">
+              Carrier
+            </div>
+            <div class="boat-type battleship" data-boat = "battleship">
+              Battleship
+            </div>
+            <div class="boat-type cruiser" data-boat = "cruiser">
+              Cruiser
+            </div>
+            <div class="boat-type submarine" data-boat = "submarine">
+              Submarine
+            </div>
+            <div class="boat-type destroyer" data-boat = "destroyer">
+              Destroyer
+            </div>
+          </div>
+          <div class="selectors">
+            <button class = "direction-button">Horizontial</button>
+            <button class = "start-game">Start</button>
+          </div>
+
+        </div>
       </div>
-      <div class="computerBoard">
+      <div class="computer-area">
 
+
+        <div class="computer-board">
+
+        </div>
+        <div class = "computer-ships">
+          <div>
+            Carrier
+          </div>
+          <div>
+            Battleship
+          </div>
+          <div>
+            Cruiser
+          </div>
+          <div>
+            Submarine
+          </div>
+          <div>
+            Destroyer
+          </div>
+        </div>
       </div>
-
     </div>
-    <div class="input-area">
-      <div class="boat-cats">
-        <div class="boat-type carrier" data-boat = "carrier">
-          Carrier
-        </div>
-        <div class="boat-type battleship" data-boat = "battleship">
-          Battleship
-        </div>
-        <div class="boat-type cruiser" data-boat = "cruiser">
-          Cruiser
-        </div>
-        <div class="boat-type submarine" data-boat = "submarine">
-          Submarine
-        </div>
-        <div class="boat-type destroyer" data-boat = "destroyer">
-          Destroyer
-        </div>
-      </div>
-      <button class = "start-game">Start</button>
-      <button class = "direction-button">Horizontial</button>
-      <button class = "reset-game">Reset</button>
 
-    </div>
   </main>
   <footer>
   </footer>
