@@ -1,22 +1,24 @@
 * {
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  font-family: 'Roboto Slab', serif;
+  color: #190B28; }
 
-h1 {
-  color: peachpuff; }
+body {
+  background: #FAFAFF; }
 
 nav {
   display: flex;
-  justify-content: space-around; }
-
-.player-board > div, .computer-board > div {
-  width: 10%;
-  height: 10%;
-  background: #eee;
-  border: black 1px solid; }
+  justify-content: space-around;
+  margin: 10px; }
 
 .game-board {
   display: flex;
   justify-content: space-around; }
+  .game-board.winner {
+    animation: shakeGame 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px; }
 
 .computer-board, .player-board {
   width: 500px;
@@ -24,46 +26,151 @@ nav {
   display: flex;
   flex-wrap: wrap; }
 
+.player-board > div, .computer-board > div {
+  width: 10%;
+  height: 10%;
+  background: #20A4F3;
+  border: #FAFAFF 1px solid; }
+
 .selectors {
   display: flex;
   justify-content: space-around; }
 
-.selected-boat {
-  border: black 1px solid; }
+.boat-type.selected-boat {
+  background: #190B28;
+  transition: background 1s; }
+  .boat-type.selected-boat .label {
+    color: #FAFAFF;
+    transition: background 1s; }
+
+.boat-type.placed {
+  background: #190B28;
+  opacity: 0.3;
+  transition: all 1s; }
+  .boat-type.placed .label {
+    color: #FAFAFF;
+    transition: background 1s; }
 
 .computer-ships {
+  margin-top: 10px;
   display: flex;
-  justify-content: space-between; }
+  flex-direction: row; }
   .computer-ships div {
     height: 50px;
     width: 100px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #eee; }
+    flex-direction: column; }
+    .computer-ships div .label {
+      display: flex;
+      justify-content: center;
+      align-items: center; }
+    .computer-ships div .image {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center; }
+      .computer-ships div .image div {
+        width: 15px;
+        height: 15px;
+        background: black;
+        border: #FAFAFF 1px solid; }
+  .computer-ships div.sunk {
+    background: #598B2C;
+    transition: background 2s; }
+    .computer-ships div.sunk .label {
+      color: #FAFAFF;
+      transition: color 2s; }
+    .computer-ships div.sunk .image div {
+      background: #598B2C; }
 
 div.boat {
   background: #bbb; }
 
 div.hit {
-  background: red; }
+  background: #EB5160;
+  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px; }
 
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-0.5px, 0, 0); }
+  20%, 80% {
+    transform: translate3d(1px, 0, 0); }
+  30%, 50%, 70% {
+    transform: translate3d(-3px, 0, 0); }
+  40%, 60% {
+    transform: translate3d(3px, 0, 0); } }
+@keyframes shakeGame {
+  10%, 90% {
+    transform: translate3d(-2px, 0, 0); }
+  20%, 80% {
+    transform: translate3d(3px, 0, 0); }
+  30%, 50%, 70% {
+    transform: translate3d(-6px, 0, 0); }
+  40%, 60% {
+    transform: translate3d(6px, 0, 0); } }
 div.miss {
-  background: peachpuff; }
+  background: grey; }
 
 div.sunk {
-  background: black; }
+  background: #190B28; }
 
 .boat-cats {
   display: flex;
-  justify-content: space-between; }
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 10px; }
+  .boat-cats .sunk {
+    background: #EB5160;
+    opacity: 1; }
+    .boat-cats .sunk .image div {
+      background: #EB5160; }
 
 .boat-cats > div {
   height: 50px;
   width: 100px;
   display: flex;
-  align-items: center;
+  flex-direction: column; }
+
+.label {
+  display: flex;
   justify-content: center;
-  background: #eee; }
+  align-items: center; }
+
+.image {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  .image div {
+    width: 15px;
+    height: 15px;
+    background: #190B28;
+    border: #FAFAFF 1px solid; }
+
+button {
+  width: 150px;
+  height: 50px;
+  border: none;
+  background-color: #190B28;
+  color: #FAFAFF;
+  font-size: 15px; }
+
+p {
+  text-align: center;
+  color: #FAFAFF;
+  background: #190B28;
+  margin: 0;
+  margin-top: 10px;
+  padding: 10px 0 10px 0; }
+
+.prompt.important {
+  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px; }
 
 /*# sourceMappingURL=style.css.map */

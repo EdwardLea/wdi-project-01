@@ -1,28 +1,41 @@
 $color: peachpuff;
+$lightblue: #FAFAFF;
+$blue: #20A4F3;
+$darkblue: #190B28;
+$black: #181F1C;
+$green: #598B2C;
+$red: #EB5160;
+
 
 *{
   box-sizing: border-box;
+  font-family: 'Roboto Slab', serif;
+  color: $darkblue;
+}
+
+body{
+  background: $lightblue
 }
 
 h1 {
-  color: $color;
+
 }
 
 nav{
   display: flex;
   justify-content: space-around;
-}
-
-.player-board > div, .computer-board > div {
-  width: 10%;
-  height: 10%;
-  background: #eee;
-  border: black 1px solid;
+  margin: 10px;
 }
 
 .game-board {
   display: flex;
   justify-content: space-around;
+  &.winner{
+    animation: shakeGame 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
 }
 
 .computer-board, .player-board {
@@ -32,25 +45,83 @@ nav{
   flex-wrap: wrap;
 }
 
+.player-board > div, .computer-board > div {
+  width: 10%;
+  height: 10%;
+  background: $blue;
+  border: $lightblue 1px solid;
+}
+
 .selectors{
   display: flex;
   justify-content: space-around;
 }
 
-.selected-boat{
-  border: black 1px solid;
-}
+.boat-type.selected-boat{
+    background: $darkblue;
+    transition: background 1s;
+
+    .label{
+      color: $lightblue;
+      transition: background 1s;
+
+    }
+  }
+
+  .boat-type.placed{
+      background: $darkblue;
+      opacity: 0.3;
+      transition: all 1s;
+
+      .label{
+        color: $lightblue;
+        transition: background 1s;
+
+      }
+    }
+
 
 .computer-ships {
+  margin-top: 10px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
   div {
     height: 50px;
     width: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #eee;
+    display:flex;
+    flex-direction: column;
+    .label{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .image{
+      flex-grow: 1;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      div{
+        width: 15px;
+        height: 15px;
+        background: black;
+        border: $lightblue 1px solid;
+      }
+    }
+  }
+  div.sunk {
+    background: $green;
+    transition: background 2s;
+    .label{
+      color: $lightblue;
+      transition: color 2s;
+
+    }
+    .image {
+      div {
+        background: $green;
+      }
+    }
   }
 }
 
@@ -59,27 +130,120 @@ div.boat {
 }
 
 div.hit{
-  background: red;
+  background: $red;
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-0.5px, 0, 0);
+  }
+
+  20%, 80% {
+    transform: translate3d(1px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-3px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(3px, 0, 0);
+  }
+}
+
+@keyframes shakeGame {
+  10%, 90% {
+    transform: translate3d(-2px, 0, 0);
+  }
+
+  20%, 80% {
+    transform: translate3d(3px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-6px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(6px, 0, 0);
+  }
 }
 
 div.miss{
-  background: peachpuff;
+  background: grey;
 }
 
 div.sunk{
-  background: black;
+  background: $darkblue;
 }
 
 .boat-cats {
   display: flex;
   justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  .sunk {
+    background: $red;
+    opacity: 1;
+    .image{
+      div{
+        background: $red;
+      }
+    }
+  }
 }
 
 .boat-cats > div {
   height: 50px;
   width: 100px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+}
+
+.label{
+  display: flex;
   justify-content: center;
-  background: #eee;
+  align-items: center;
+}
+
+.image{
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  div{
+    width: 15px;
+    height: 15px;
+    background: $darkblue;
+    border: $lightblue 1px solid;
+  }
+}
+
+button {
+  width: 150px;
+  height: 50px;
+  border: none;
+  background-color: $darkblue;
+  color: $lightblue;
+  font-size: 15px;
+}
+
+p{
+  text-align: center;
+  color: $lightblue;
+  background: $darkblue;
+  margin: 0;
+  margin-top: 10px;
+  padding: 10px 0 10px 0;
+}
+
+.prompt.important{
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }

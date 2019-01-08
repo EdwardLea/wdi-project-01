@@ -77,6 +77,19 @@ $(() => {
   const $selectorButtons = $('.selectors')
   const $instructionButtons = $('.instructions-button')
   const $instructions = $('.instructions')
+  const $imagesDiv = $('.image')
+  const $resultDisplay = $('.results')
+  const $computerGame = $('.computer-area')
+  const $playerPrompt = $('.prompt')
+  const $inPlayPrompt = $('.prompt-in-play')
+  const $audio = $('#sound')
+
+  $imagesDiv.each((index, el) => {
+    for(let i = 0; i<el.dataset.length; i++){
+      const div = document.createElement('div')
+      el.append(div)
+    }
+  })
 
 
   // adding board elements to players board
@@ -90,8 +103,11 @@ $(() => {
     $computerBoard.append($('<div />'))
   }
   const $grid2 = $computerBoard.find('div')
+
   $instructions.hide()
+  $resultDisplay.hide()
   $resetButton.hide()
+  $computerGame.hide()
 
   // FUNCTIONS--------------------------------------------------------------------
 
@@ -104,15 +120,22 @@ $(() => {
 
   // function to find selected boat from menu
   function selectBoatType(e){
-    selectedBoat = e.target.dataset.boat
+    selectedBoat = e.currentTarget.dataset.boat
+    $(e.currentTarget).removeClass('placed')
     $type.removeClass('selected-boat')
-    $(e.target).addClass('selected-boat')
+    $(e.currentTarget).addClass('selected-boat')
     $resetButton.show()
+
   }
 
   function instructionsToggle(){
-    $instructions.toggle()
+    $instructions.toggle(400, 'swing')
   }
+
+  function addBoatImages(){
+
+  }
+
 
   // function to change direction of placing player boats
   function toggleDirection(e){
@@ -149,8 +172,11 @@ $(() => {
       const boatIndex = $grid1.index($(e.target))
       if(selectedBoat === ''){
         alert('Select a boat first!')
+        $playerPrompt.addClass('important')
+
         return
       } else {
+        $playerPrompt.hide(500)
         const type = selectedBoat
         if(boats.find(boat => boat.name === type).playerPlaced){
           $(`.player-board > .${type}`).removeClass('boat')
@@ -183,6 +209,11 @@ $(() => {
       boatArray.forEach(el => board.eq(el).addClass(`boat ${type}`))
       if(player){
         boats.find(boat => boat.name === type).playerPlaced = true
+        console.log(type)
+        $(`.boat-cats > .${type}`).addClass('placed')
+        // $selectorButtons.find(`.${type}`).addClass('placed')
+        // $(e.currentTarget).addClass('selected-boat')
+
       }
       return true
     } else {
@@ -217,9 +248,12 @@ $(() => {
       console.log('ready to play')
       gameInPlay = true
       playerTurn = true
+      $audio.attr('src','../assets/audio/sonar.mp3')
+      $audio[0].play()
       computerBoatPos()
       $type.removeClass('selected-boat')
       $selectorButtons.hide()
+      $computerGame.show(500)
 
     } else {
       console.log('not ready to play')
@@ -237,6 +271,7 @@ $(() => {
     if(playerTurn === false || winner === true){
       e.preventDefault()
     } else{
+      $inPlayPrompt.hide(500)
       const cell = $grid2.index($(e.target))
       // check if class hit already added
       if($grid2.eq(cell).hasClass('hit') || $grid2.eq(cell).hasClass('miss')){
@@ -301,7 +336,7 @@ $(() => {
       computerPlay()
     } else {
       // if less than 4 make move index based on compHitPosition
-      const strategicHit = compHitPosition + compStrikeIndex[hitAttempts]
+      let strategicHit = compHitPosition + compStrikeIndex[hitAttempts]
       // check if cell has a class of hit or Miss
       if($grid1.eq(strategicHit).hasClass('miss') || $grid1.eq(strategicHit).hasClass('hit')){
         // if it does increment attempts and run hitMove again
@@ -313,9 +348,11 @@ $(() => {
           console.log('comp hit')
           $grid1.eq(strategicHit).removeClass('hit')
           $grid1.eq(strategicHit).addClass('hit')
-          hitAttempts = 0
+          // hitAttempts = 0
           compTotalHits++
+          // strategicHit = strategicHit + compStrikeIndex[hitAttempts]
           compHitPosition = strategicHit
+          // if(check for sink = true) make hitShip = false
           checkForSink(false)
           console.log(`Comp Hits: ${compTotalHits}`)
         } else {
@@ -331,12 +368,16 @@ $(() => {
   function checkForSink(player) {
     let boardName
     let sunkBoats
+    let boatsMenu
     if(player){
       boardName = '.computer-board'
       sunkBoats = 'playerSunk'
+      boatsMenu = '.computer-ships'
     } else {
       boardName = '.player-board'
       sunkBoats = 'compSunk'
+      boatsMenu = '.boat-cats'
+
     }
     boats.forEach(boat => {
       console.log($(`${boardName} > .${boat.name}.hit`).length)
@@ -345,6 +386,8 @@ $(() => {
           console.log(`${sunkBoats}sunk boat is a ${boat.name}!`)
           boat[sunkBoats] = true
           $(`${boardName} > .${boat.name}.hit`).addClass('sunk')
+          $(`${boatsMenu} > .${boat.name}`).addClass('sunk')
+          $(`${boardName}`).addClass('sunk')
 
         }
       }
@@ -354,19 +397,32 @@ $(() => {
   // check to see if game has been won. All boats have been hit
   function checkForWin(){
     if($('.computer-board > .hit').length === 17) {
-      alert('You win!')
       winner = true
+      $('.game-board').addClass('winner')
+      $resultDisplay.text('You won! Click reset button below to play again...')
+      $resultDisplay.show()
     }
     if($('.player-board > .hit').length === 17) {
-      alert('Computer win!')
       winner = true
+      $('.game-board').addClass('winner')
+      $resultDisplay.text('You lost this time! Click reset button below to play again...')
+      $resultDisplay.show()
     }
+
   }
 
   function startGame(){
     clearBoard()
     $selectorButtons.show()
     $resetButton.hide()
+    $resultDisplay.hide()
+    $computerGame.hide()
+    $inPlayPrompt.show()
+    $playerPrompt.show()
+    $type.removeClass('selected-boat')
+    $type.removeClass('placed')
+    $('.computer-ships > div').removeClass('sunk')
+    $('.boat-cats > div').removeClass('sunk')
     boats = boatsTemplate.map(boat => Object.assign({}, boat))
     gameInPlay = false
     playerTurn = false
@@ -389,6 +445,7 @@ $(() => {
   // Event Listeners------------------------------------------------------------
 
   $grid1.on('click', addPlayerBoat)
+  $grid1.on('mouseover', )
   $grid2.on('click', checkForHit)
   $type.on('click', selectBoatType)
   $startButton.on('click', readyToPlay)
