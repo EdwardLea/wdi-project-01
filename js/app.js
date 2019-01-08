@@ -11,12 +11,17 @@ $(() => {
   let compTotalHits = 0
   let board = ''
   let hitShip = false
-  let hitAttempts = 0
+  let hitSuccess = false
+  let successfulHits = 1
+  // let firstHit = true
+  // let hitAttempts = 0
   let compHitPosition = 0
+  let strategicHit = 0
   let nextMove = 0
   let selectedBoat = ''
   let winner = false
-  const compStrikeIndex = [1,-1, boardWidth, -boardWidth]
+  const compStrikeIndex = [1, 10, -1, -10]
+  let direction = compStrikeIndex[getRandomNumber(0, compStrikeIndex.length-1)]
   const orientation = ['vertical','horizontial']
   const boatsTemplate = [{
     name: 'carrier',
@@ -130,10 +135,6 @@ $(() => {
 
   function instructionsToggle(){
     $instructions.toggle(400, 'swing')
-  }
-
-  function addBoatImages(){
-
   }
 
 
@@ -286,33 +287,31 @@ $(() => {
         $grid2.eq(cell).addClass('miss')
         computerPlay(e)
       }
-      // increment number of player hits
-      console.log(`Player Hits: ${playerTotalHits}`)
     }
   }
 
   // function for computer to pick position on grid and check if match takes place
   function computerPlay(){
-    console.log({compHitPosition})
+    // console.log({compHitPosition})
     if(hitShip){
       hitMove()
     } else{
       nextMove = getRandomNumber(0, (boardWidth * boardWidth)-1)
-      console.log(nextMove)
+      // console.log(nextMove)
       if($grid1.eq(nextMove).hasClass('boat')){
-        console.log('comp hit')
+        // console.log('comp hit')
         $grid1.eq(nextMove).removeClass('boat')
         $grid1.eq(nextMove).addClass('hit')
         compTotalHits++
         hitShip = true
         compHitPosition = nextMove
         checkForSink(false)
-        console.log(`Comp Hits: ${compTotalHits}`)
+        // console.log(`Comp Hits: ${compTotalHits}`)
       } else if($grid1.eq(nextMove).hasClass('hit')){
-        console.log('You have already hit here')
+        // console.log('You have already hit here')
         computerPlay()
       }else if($grid1.eq(nextMove).hasClass('miss')){
-        console.log('You have already hit here')
+        // console.log('You have already hit here')
         computerPlay()
       } else{
         $grid1.eq(nextMove).addClass('miss')
@@ -327,42 +326,59 @@ $(() => {
 
   // Function used to calculate strategic move based on last hit position
   function hitMove() {
-    console.log(`hit Attempts: ${hitAttempts}`)
-    // check Attempts is less than 4
-    if(hitAttempts > 3) {
-      // if greater than 4 make hit = false and run computer play
-      hitShip = false
-      hitAttempts = 0
-      computerPlay()
+    console.log(compHitPosition)
+    console.log(direction)
+
+    strategicHit = compHitPosition + (direction * successfulHits)
+    console.log(strategicHit)
+
+    if($grid1.eq(strategicHit).hasClass('boat')){
+      console.log('comp hit')
+      $grid1.eq(strategicHit).removeClass('boat')
+      $grid1.eq(strategicHit).addClass('hit')
+      compTotalHits++
+      hitShip = true
+      successfulHits++
+      hitSuccess = true
+      checkForSink(false)
+      if($grid1.eq(strategicHit).hasClass('sunk')){
+        successfulHits = 1
+        hitShip = false
+        hitSuccess =false
+      }
+
+      // console.log(`Comp Hits: ${compTotalHits}`)
+    } else if ($grid1.eq(strategicHit).hasClass('hit')){
+      compStrikeIndex.filter(position => position !== direction)
+      console.log(compStrikeIndex.length)
+      direction = compStrikeIndex[getRandomNumber(0, compStrikeIndex.length-1)]
+      console.log(direction)
+      console.log('You have already hit here')
+      hitMove()
+    } else if ($grid1.eq(strategicHit).hasClass('miss')){
+      console.log('You have already hit here')
+      compStrikeIndex.filter(position => position !== direction)
+      console.log(compStrikeIndex.length)
+      direction = compStrikeIndex[getRandomNumber(0, compStrikeIndex.length-1)]
+      console.log(direction)
+      hitMove()
     } else {
-      // if less than 4 make move index based on compHitPosition
-      let strategicHit = compHitPosition + compStrikeIndex[hitAttempts]
-      // check if cell has a class of hit or Miss
-      if($grid1.eq(strategicHit).hasClass('miss') || $grid1.eq(strategicHit).hasClass('hit')){
-        // if it does increment attempts and run hitMove again
-        hitAttempts++
-        hitMove()
+      if (hitSuccess){
+        console.log('end of boat')
+        $grid1.eq(strategicHit).addClass('miss')
+        $grid1.eq(strategicHit).removeClass('boat')
+        direction = -direction
+        successfulHits = 1
       } else {
-        // if not carry out hit, if successful run hitMove again
-        if($grid1.eq(strategicHit).hasClass('boat')){
-          console.log('comp hit')
-          $grid1.eq(strategicHit).removeClass('hit')
-          $grid1.eq(strategicHit).addClass('hit')
-          // hitAttempts = 0
-          compTotalHits++
-          // strategicHit = strategicHit + compStrikeIndex[hitAttempts]
-          compHitPosition = strategicHit
-          // if(check for sink = true) make hitShip = false
-          checkForSink(false)
-          console.log(`Comp Hits: ${compTotalHits}`)
-        } else {
-          $grid1.eq(strategicHit).removeClass('hit')
-          $grid1.eq(strategicHit).addClass('miss')
-          hitAttempts++
-        }
+        $grid1.eq(strategicHit).addClass('miss')
+        $grid1.eq(strategicHit).removeClass('boat')
+        hitSuccess = false
       }
     }
+    checkForWin()
+    playerTurn = true
   }
+
 
   // function to check if new hit for player or computer has sunk ships
   function checkForSink(player) {
@@ -380,16 +396,13 @@ $(() => {
 
     }
     boats.forEach(boat => {
-      console.log($(`${boardName} > .${boat.name}.hit`).length)
-      if(boat.length === $(`${boardName} > .${boat.name}.hit`).length){
-        if(!boat[sunkBoats]){
-          console.log(`${sunkBoats}sunk boat is a ${boat.name}!`)
-          boat[sunkBoats] = true
-          $(`${boardName} > .${boat.name}.hit`).addClass('sunk')
-          $(`${boatsMenu} > .${boat.name}`).addClass('sunk')
-          $(`${boardName}`).addClass('sunk')
-
-        }
+      if(boat.length === $(`${boardName} > .${boat.name}.hit`).length && !boat[sunkBoats]){
+        console.log(`${sunkBoats}sunk boat is a ${boat.name}!`)
+        boat[sunkBoats] = true
+        $(`${boardName} > .${boat.name}.hit`).addClass('sunk')
+        $(`${boatsMenu} > .${boat.name}`).addClass('sunk')
+        $(`${boardName}`).addClass('sunk')
+        return true
       }
     })
   }
