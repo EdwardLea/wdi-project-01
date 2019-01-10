@@ -80,6 +80,12 @@ header .instructions p {
         color: #FAFAFF;
         margin: 50px; }
 
+.computer-board > div.boat {
+  background: #20A4F3; }
+
+.player-board > div.boat {
+  background: #bbb; }
+
 .computer-board, .player-board {
   width: 500px;
   height: 500px;
@@ -92,8 +98,6 @@ header .instructions p {
     border: #FAFAFF 1px solid; }
   .computer-board div.hover, .player-board div.hover {
     background: #FAFAFF; }
-  .computer-board div.boat, .player-board div.boat {
-    background: #bbb; }
   .computer-board div.hit, .player-board div.hit {
     background: #EB5160;
     animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;

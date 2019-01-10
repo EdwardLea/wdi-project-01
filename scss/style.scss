@@ -109,6 +109,14 @@ header{
   }
 }
 
+.computer-board >div.boat{
+  background: $blue;
+}
+
+.player-board >div.boat{
+  background: #bbb;
+}
+
 .computer-board, .player-board {
   width: 500px;
   height: 500px;
@@ -122,9 +130,6 @@ header{
   }
   div.hover{
     background: $lightblue;
-  }
-  div.boat {
-    background: #bbb;
   }
   div.hit{
     background: $red;

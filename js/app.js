@@ -98,6 +98,62 @@ let $grid2
 
 // FUNCTIONS--------------------------------------------------------------------
 
+// function to initiate the game
+function init(){
+  // DOM elements added
+  $playerBoard = $('.player-board')
+  $computerBoard = $('.computer-board')
+  $type = $('.boat-type')
+  $startButton = $('.start-game')
+  $directionButton = $('.direction-button')
+  $resetButton = $('.reset-game')
+  $selectorButtons = $('.selectors')
+  $instructionButtons = $('.instructions-button')
+  $instructions = $('.instructions')
+  $imagesDiv = $('.image')
+  $resultDisplay = $('.results')
+  $popUp = $('.message')
+  $computerGame = $('.computer-area')
+  $playerPrompt = $('.prompt')
+  $inPlayPrompt = $('.prompt-in-play')
+  $audio = $('#sound')
+  $audio2 = $('#sound2')
+
+  // adding image divs to each boat button
+  $imagesDiv.each((index, el) => {
+    for(let i = 0; i<el.dataset.length; i++){
+      const div = document.createElement('div')
+      el.append(div)
+    }
+  })
+
+  // adding board elements to players board
+  for(let i = 0; i<boardWidth*boardWidth; i++) {
+    $playerBoard.append($('<div />'))
+  }
+  $grid1 = $playerBoard.find('div')
+
+  // adding board elements to computers board
+  for(let i = 0; i<boardWidth*boardWidth; i++) {
+    $computerBoard.append($('<div />'))
+  }
+  $grid2 = $computerBoard.find('div')
+
+  startGame()
+
+  // Event Listeners------------------------------------------------------------
+  $grid1.on('click', addPlayerBoat)
+  $grid1.on('mousemove', addPlayerBoat)
+  $grid1.on('mouseleave', removeHoverEffect)
+  $grid2.on('click', checkForHit)
+  $type.on('click', selectBoatType)
+  $startButton.on('click', readyToPlay)
+  $directionButton.on('click', toggleDirection)
+  $resetButton.on('click', startGame)
+  $instructionButtons.on('click',instructionsToggle)
+  $(document).on('keypress', rotateShip)
+}
+
 // functions used to start and restart the game-----------------------------------
 function startGame(){
   clearBoard()
@@ -523,59 +579,4 @@ function displayWinner(won){
   $('.overlay').css('display', 'flex')
   $('.game-board').addClass('winner')
   winner = true
-}
-
-function init(){
-  // DOM elements added
-  $playerBoard = $('.player-board')
-  $computerBoard = $('.computer-board')
-  $type = $('.boat-type')
-  $startButton = $('.start-game')
-  $directionButton = $('.direction-button')
-  $resetButton = $('.reset-game')
-  $selectorButtons = $('.selectors')
-  $instructionButtons = $('.instructions-button')
-  $instructions = $('.instructions')
-  $imagesDiv = $('.image')
-  $resultDisplay = $('.results')
-  $popUp = $('.message')
-  $computerGame = $('.computer-area')
-  $playerPrompt = $('.prompt')
-  $inPlayPrompt = $('.prompt-in-play')
-  $audio = $('#sound')
-  $audio2 = $('#sound2')
-
-  // adding image divs to each boat button
-  $imagesDiv.each((index, el) => {
-    for(let i = 0; i<el.dataset.length; i++){
-      const div = document.createElement('div')
-      el.append(div)
-    }
-  })
-
-  // adding board elements to players board
-  for(let i = 0; i<boardWidth*boardWidth; i++) {
-    $playerBoard.append($('<div />'))
-  }
-  $grid1 = $playerBoard.find('div')
-
-  // adding board elements to computers board
-  for(let i = 0; i<boardWidth*boardWidth; i++) {
-    $computerBoard.append($('<div />'))
-  }
-  $grid2 = $computerBoard.find('div')
-
-  startGame()
-
-  // Event Listeners------------------------------------------------------------
-  $grid1.on('click', addPlayerBoat)
-  $grid1.on('mousemove', addPlayerBoat)
-  $grid1.on('mouseleave', removeHoverEffect)
-  $grid2.on('click', checkForHit)
-  $type.on('click', selectBoatType)
-  $startButton.on('click', readyToPlay)
-  $directionButton.on('click', toggleDirection)
-  $resetButton.on('click', startGame)
-  $instructionButtons.on('click',instructionsToggle)
-  $(document).on('keypress', rotateShip)
 }
