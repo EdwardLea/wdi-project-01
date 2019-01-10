@@ -486,10 +486,14 @@ function checkForSink(player) {
       checkForWin()
       // *************************
       if(!winner){
-        $('.overlay').css('display', 'flex')
-        setTimeout(function(){
-          $('.overlay').css('display', 'none')
-        }, 2000)
+        let text
+        // *********************
+        if(sunkBoats === 'playerSunk'){
+          text =`Good find! You sunk the ${boat.name}!`
+        } else {
+          text = `The computer is good! It found your ${boat.name}!`
+        }
+        displayAlertBox(text, 2)
         return true
       }
     }

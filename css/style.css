@@ -169,8 +169,7 @@ header .instructions p {
 .boat-cats {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
-  margin-bottom: 10px; }
+  margin-top: 10px; }
   .boat-cats > div {
     height: 50px;
     width: 100px;
