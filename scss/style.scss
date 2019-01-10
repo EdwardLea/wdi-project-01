@@ -109,8 +109,13 @@ header{
   }
 }
 
+.player-board >div.hover{
+  background: $lightblue;
+}
+
 .computer-board >div.boat{
-  background: $blue;
+  background: #bbb;
+  // background: $blue;
 }
 
 .player-board >div.boat{
@@ -128,12 +133,9 @@ header{
     background: $blue;
     border: $lightblue 1px solid;
   }
-  div.hover{
-    background: $lightblue;
-  }
   div.hit{
     background: $red;
-    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    animation: shake 0.7s cubic-bezier(.36,.07,.19,.97) both;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     perspective: 1000px;
@@ -184,8 +186,6 @@ header{
   }
 }
 
-
-// computer ship logos
 .computer-ships {
   margin-top: 10px;
   display: flex;
@@ -251,6 +251,15 @@ header{
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000px;
+}
+
+footer{
+  margin-top: 80px;
+  p{
+    text-align: right;
+    font-family: 'Roboto Slab', serif;
+    padding-right: 30px;
+  }
 }
 
 @keyframes shake {

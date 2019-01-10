@@ -80,8 +80,11 @@ header .instructions p {
         color: #FAFAFF;
         margin: 50px; }
 
+.player-board > div.hover {
+  background: #FAFAFF; }
+
 .computer-board > div.boat {
-  background: #20A4F3; }
+  background: #bbb; }
 
 .player-board > div.boat {
   background: #bbb; }
@@ -96,11 +99,9 @@ header .instructions p {
     height: 10%;
     background: #20A4F3;
     border: #FAFAFF 1px solid; }
-  .computer-board div.hover, .player-board div.hover {
-    background: #FAFAFF; }
   .computer-board div.hit, .player-board div.hit {
     background: #EB5160;
-    animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    animation: shake 0.7s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     perspective: 1000px; }
@@ -190,6 +191,13 @@ header .instructions p {
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000px; }
+
+footer {
+  margin-top: 80px; }
+  footer p {
+    text-align: right;
+    font-family: 'Roboto Slab', serif;
+    padding-right: 30px; }
 
 @keyframes shake {
   10%, 90% {
