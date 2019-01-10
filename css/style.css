@@ -4,12 +4,38 @@
   color: #190B28; }
 
 body {
-  background: #FAFAFF; }
+  background: #FAFAFF;
+  margin: 0; }
 
+button {
+  width: 150px;
+  height: 50px;
+  border: none;
+  background-color: #190B28;
+  color: #FAFAFF;
+  font-size: 15px; }
+
+p {
+  text-align: center;
+  color: #FAFAFF;
+  background: #190B28;
+  margin: 0;
+  margin-top: 10px;
+  padding: 10px 0 10px 0; }
+
+header h1 {
+  color: #FAFAFF;
+  background: #190B28;
+  margin: 0;
+  padding: 20px; }
 header nav {
   display: flex;
   justify-content: space-around;
   margin: 10px; }
+header .instructions p {
+  background: #FAFAFF;
+  color: #190B28;
+  margin-top: 0; }
 
 .game-board {
   display: flex;
@@ -20,6 +46,14 @@ header nav {
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     perspective: 1000px; }
+  .game-board .player-area div.player-input-area {
+    display: flex; }
+    .game-board .player-area div.player-input-area .selectors {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around; }
+      .game-board .player-area div.player-input-area .selectors button {
+        margin-left: 10px; }
   .game-board .overlay {
     position: absolute;
     display: none;
@@ -33,8 +67,8 @@ header nav {
     z-index: 10;
     transition: all 1s linear; }
     .game-board .overlay .text-box {
-      width: 30%;
-      height: 20%;
+      width: auto;
+      height: auto;
       background: #190B28;
       z-index: 20;
       opacity: 1;
@@ -43,38 +77,65 @@ header nav {
       justify-content: center;
       align-items: center; }
       .game-board .overlay .text-box h2 {
-        color: #FAFAFF; }
+        color: #FAFAFF;
+        margin: 50px; }
 
 .computer-board, .player-board {
   width: 500px;
   height: 500px;
   display: flex;
   flex-wrap: wrap; }
+  .computer-board > div, .player-board > div {
+    width: 10%;
+    height: 10%;
+    background: #20A4F3;
+    border: #FAFAFF 1px solid; }
+  .computer-board div.hover, .player-board div.hover {
+    background: #FAFAFF; }
+  .computer-board div.boat, .player-board div.boat {
+    background: #bbb; }
+  .computer-board div.hit, .player-board div.hit {
+    background: #EB5160;
+    animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px; }
+  .computer-board div.miss, .player-board div.miss {
+    background: #eee; }
+  .computer-board div.sunk, .player-board div.sunk {
+    background: #190B28; }
 
-.player-board > div, .computer-board > div {
-  width: 10%;
-  height: 10%;
-  background: #20A4F3;
-  border: #FAFAFF 1px solid; }
+.boat-type {
+  flex-grow: 1; }
+  .boat-type.selected-boat {
+    background: #190B28;
+    transition: background 1s; }
+    .boat-type.selected-boat .label {
+      color: #FAFAFF;
+      transition: background 1s; }
+  .boat-type.placed {
+    background: #190B28;
+    opacity: 0.3;
+    transition: all 1s; }
+    .boat-type.placed .label {
+      color: #FAFAFF;
+      transition: background 1s; }
 
-.selectors {
+.label {
   display: flex;
-  justify-content: space-around; }
+  justify-content: center;
+  align-items: center; }
 
-.boat-type.selected-boat {
-  background: #190B28;
-  transition: background 1s; }
-  .boat-type.selected-boat .label {
-    color: #FAFAFF;
-    transition: background 1s; }
-
-.boat-type.placed {
-  background: #190B28;
-  opacity: 0.3;
-  transition: all 1s; }
-  .boat-type.placed .label {
-    color: #FAFAFF;
-    transition: background 1s; }
+.image {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  .image div {
+    width: 15px;
+    height: 15px;
+    background: #190B28;
+    border: #FAFAFF 1px solid; }
 
 .computer-ships {
   margin-top: 10px;
@@ -85,10 +146,6 @@ header nav {
     width: 100px;
     display: flex;
     flex-direction: column; }
-    .computer-ships div .label {
-      display: flex;
-      justify-content: center;
-      align-items: center; }
     .computer-ships div .image {
       flex-grow: 1;
       display: flex;
@@ -109,11 +166,23 @@ header nav {
     .computer-ships div.sunk .image div {
       background: #598B2C; }
 
-div.boat {
-  background: #bbb; }
+.boat-cats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 10px; }
+  .boat-cats > div {
+    height: 50px;
+    width: 100px;
+    display: flex;
+    flex-direction: column; }
+  .boat-cats .sunk {
+    background: #EB5160;
+    opacity: 1; }
+    .boat-cats .sunk .image div {
+      background: #EB5160; }
 
-div.hit {
-  background: #EB5160;
+.important {
   animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
@@ -137,68 +206,5 @@ div.hit {
     transform: translate3d(-6px, 0, 0); }
   40%, 60% {
     transform: translate3d(6px, 0, 0); } }
-div.miss {
-  background: grey; }
-
-div.sunk {
-  background: #190B28; }
-
-.boat-cats {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-  margin-bottom: 10px; }
-  .boat-cats .sunk {
-    background: #EB5160;
-    opacity: 1; }
-    .boat-cats .sunk .image div {
-      background: #EB5160; }
-
-.boat-cats > div {
-  height: 50px;
-  width: 100px;
-  display: flex;
-  flex-direction: column; }
-
-.label {
-  display: flex;
-  justify-content: center;
-  align-items: center; }
-
-.image {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center; }
-  .image div {
-    width: 15px;
-    height: 15px;
-    background: #190B28;
-    border: #FAFAFF 1px solid; }
-
-button {
-  width: 150px;
-  height: 50px;
-  border: none;
-  background-color: #190B28;
-  color: #FAFAFF;
-  font-size: 15px; }
-
-p {
-  text-align: center;
-  color: #FAFAFF;
-  background: #190B28;
-  margin: 0;
-  margin-top: 10px;
-  padding: 10px 0 10px 0; }
-
-.important {
-  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  perspective: 1000px; }
-
-div.hover {
-  background: yellow; }
 
 /*# sourceMappingURL=style.css.map */

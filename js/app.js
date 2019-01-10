@@ -1,4 +1,6 @@
-$(() => {init()})
+$(() => {
+  init()
+})
 
 //  PARAMETERS----------------------------------------------------------
 // Board Parameters
@@ -7,17 +9,17 @@ const boardWidth = 10
 // Game Parameters
 let gameInPlay = false
 let playerTurn = false
-let playerTotalHits = 0
-let compTotalHits = 0
-let board = ''
 let hitShip = false
 let hitSuccess = false
-let successfulHits = 1
+let winner = false
+let playerTotalHits = 0
+let compTotalHits = 0
 let compHitPosition = 0
 let strategicHit = 0
 let nextMove = 0
+let successfulHits = 1
+let board = ''
 let selectedBoat = ''
-let winner = false
 let compStrikeIndex = [1, boardWidth, -1, -boardWidth]
 let direction = compStrikeIndex[getRandomNumber(0, compStrikeIndex.length-1)]
 const orientation = ['vertical','horizontial']
@@ -96,6 +98,43 @@ let $grid2
 
 // FUNCTIONS--------------------------------------------------------------------
 
+// functions used to start and restart the game-----------------------------------
+function startGame(){
+  clearBoard()
+  $selectorButtons.show()
+  $resetButton.hide()
+  $resultDisplay.hide()
+  $computerGame.hide()
+  $inPlayPrompt.show()
+  $playerPrompt.show()
+  $instructions.hide()
+  $('.overlay').css('display', 'none')
+  // *********************
+  $type.removeClass('selected-boat')
+  $type.removeClass('placed')
+  $('.computer-ships > div').removeClass('sunk')
+  $('.boat-cats > div').removeClass('sunk')
+  boats = boatsTemplate.map(boat => Object.assign({}, boat))
+  gameInPlay = false
+  playerTurn = false
+  winner = false
+  hitShip = false
+  hitSuccess = false
+  playerTotalHits = 0
+  compTotalHits = 0
+  compHitPosition = 0
+  nextMove = 0
+  successfulHits = 1
+  board = ''
+  selectedBoat = ''
+  compStrikeIndex = [1, boardWidth, -1, -boardWidth]
+}
+
+function clearBoard(){
+  $grid1.removeClass()
+  $grid2.removeClass()
+}
+
 // Functions to set boat positions for computer and player--------------------
 
 // function to randomly generate number for placement of ships and selecting hits
@@ -105,28 +144,14 @@ function getRandomNumber(min, max) {
 
 // function to find selected boat from menu
 function selectBoatType(e){
-  selectedBoat = e.currentTarget.dataset.boat
-  $(e.currentTarget).removeClass('placed')
-  $type.removeClass('selected-boat')
-  $(e.currentTarget).addClass('selected-boat')
-  $resetButton.show()
-
-}
-
-// function  to toggle instruction show and hide
-function instructionsToggle(){
-  $instructions.toggle(400, 'swing')
-}
-
-// function to change direction of placing player boats
-function toggleDirection(e){
-  // ************************
-  // e.currentTarget.innerText === 'Horizontial' ? $directionButton.text('Vertical') : $directionButton.text('Horizontial')
-
-  if(e.currentTarget.innerText === 'Horizontial'){
-    $directionButton.text('Vertical')
+  if(gameInPlay || winner){
+    e.preventDefault()
   } else {
-    $directionButton.text('Horizontial')
+    selectedBoat = e.currentTarget.dataset.boat
+    $(e.currentTarget).removeClass('placed')
+    $type.removeClass('selected-boat')
+    $(e.currentTarget).addClass('selected-boat')
+    $resetButton.show()
   }
 }
 
@@ -141,35 +166,27 @@ function computerBoatPos(){
       boat.compPlaced = addBoat(boatIndex, type, direction, player, true)
     }
   })
-  if($('.computer-board > .boat').length !== 17){
-    computerBoatPos()
-  }
+  if($('.computer-board > .boat').length !== 17) computerBoatPos()
 }
 
 // function to get player selected position
 function addPlayerBoat(e){
-  if(gameInPlay === true){
+  if(gameInPlay === true || winner === true){
     e.preventDefault()
   } else {
-    let clicked
-    if(e.type === 'click'){
-      clicked = true
-    }else{
-      clicked = false
-    }
+    const clicked = e.type === 'click' ? true : false
     const boatIndex = $grid1.index($(e.target))
     if(selectedBoat === '' && clicked){
-      displayAlertBox('Select a boat first!')
+      displayAlertBox('Select a ship below first!', 2)
       $type.addClass('important')
-    } else if(selectedBoat === '' && !clicked){
+    } else if (selectedBoat === '' && !clicked){
       return
-    }else {
-      $playerPrompt.hide(500)
+    } else {
+      if(clicked) $playerPrompt.hide(500)
       const type = selectedBoat
       if(boats.find(boat => boat.name === type).playerPlaced){
         if(clicked){
-          $(`.player-board > .${type}`).removeClass('boat')
-          $(`.player-board > .${type}`).removeClass(`${type}`)
+          $(`.player-board > .${type}`).removeClass(`boat ${type}`)
         }
       }
       const direction = $directionButton.text().toLowerCase()
@@ -192,20 +209,18 @@ function addBoat(boatIndex, type, direction, player, clicked){
       boatArray.push(boatIndex + (boardWidth * i))
     }
   }
-
   player ? board = $grid1 : board = $grid2
-
   // add class to boat elements based on validation result
   if(selectionValidation(boatArray, board, boatLength, player, clicked)){
     if(clicked){
       boatArray.forEach(el => board.eq(el).addClass(`boat ${type}`))
-    } else{
+    } else {
       removeHoverEffect()
       boatArray.forEach(el => board.eq(el).addClass('hover'))
     }
     if(player){
       boats.find(boat => boat.name === type).playerPlaced = true
-      $(`.boat-cats > .${type}`).addClass('placed')
+      if(clicked) $(`.boat-cats > .${type}`).addClass('placed')
     }
     return true
   } else {
@@ -213,11 +228,7 @@ function addBoat(boatIndex, type, direction, player, clicked){
   }
 }
 
-function removeHoverEffect(){
-  $grid1.removeClass('hover')
-}
-
-// validation function to check if selected element is acceptable
+// validation function to check if selected element is acceptable placement
 function selectionValidation (boatArray, board, boatLength, player){
   // check boat array vertical conditions
   if((boatArray.some(boat => boat < 0 || boat > ((boardWidth * boardWidth)-1)))){
@@ -236,13 +247,13 @@ function selectionValidation (boatArray, board, boatLength, player){
   return true
 }
 
-// function to check if game can start
+// function to check if game can start, all boards are positioned on the board
 function readyToPlay() {
   const numberOfBoats = $('.player-board > .boat').length
   if(numberOfBoats === 17){
     gameInPlay = true
     playerTurn = true
-    playAudio('sonar', 3)
+    playAudio('sonar')
     computerBoatPos()
     $type.removeClass('selected-boat')
     $selectorButtons.hide()
@@ -250,14 +261,47 @@ function readyToPlay() {
   } else {
     gameInPlay = false
     playerTurn = false
-    displayAlertBox('Not enough boats placed!')
-    return
+    displayAlertBox('Not enough boats placed!', 2)
   }
+}
+
+// function to toggle instructions between show and hide
+function instructionsToggle(){
+  $instructions.toggle(400, 'swing')
+}
+
+// function to remove hover effect from board
+function removeHoverEffect(){
+  $grid1.removeClass('hover')
+}
+
+// function to change direction of placing player boats
+function toggleDirection(){
+  if($directionButton.text() === 'Horizontial')  {
+    $directionButton.text('Vertical')
+    $directionButton.css('transform', 'rotate(90deg)')
+  } else {
+    $directionButton.text('Horizontial')
+    $directionButton.css('transform', 'rotate(0deg)')
+  }
+}
+
+function rotateShip(e){
+  if(e.keyCode === 32)toggleDirection()
+}
+
+// function to update alert box with message
+function displayAlertBox(string, duration){
+  $popUp.text(`${string}`)
+  $('.overlay').css('display', 'flex')
+  setTimeout(function(){
+    $('.overlay').css('display', 'none')
+  }, (duration * 1000))
 }
 
 // In play game logic---------------------------------------------------------
 
-// check if players click is located on a boat
+// check if player's click is successful or not
 function checkForHit(e){
   if(playerTurn === false || winner === true){
     e.preventDefault()
@@ -272,22 +316,23 @@ function checkForHit(e){
       $grid2.eq(cell).addClass('hit')
       playerTotalHits++
       checkForSink(true)
-      checkForWin()
-      playAudio('hit',3)
+      playAudio('hit')
+      // ************* move function outside of div
+      setTimeout(computerPlay, 1500)
     } else {
       $grid2.eq(cell).addClass('miss')
-      computerPlay(e)
+      setTimeout(computerPlay, 1500)
     }
   }
+  playerTurn = false
 }
 
-function playAudio(type,duration=10){
-  $audio[0].pause()
+
+// function to play audio
+function playAudio(type){
   $audio.attr('src',`./assets/audio/${type}.mp3`)
   $audio.currentTime = 0
-  $audio.loop = false
   $audio[0].play()
-  setTimeout(() => $audio[0].pause(),(duration * 1000))
 }
 
 // function for computer to pick position on grid and check if match takes place
@@ -303,7 +348,6 @@ function computerPlay(){
       hitShip = true
       compHitPosition = nextMove
       checkForSink(false)
-      checkForWin()
     } else if($grid1.eq(nextMove).hasClass('hit')){
       computerPlay()
     }else if($grid1.eq(nextMove).hasClass('miss')){
@@ -317,7 +361,7 @@ function computerPlay(){
   playerTurn = true
 }
 
-// Function used to calculate strategic move based on last hit position
+// Function used to calculate strategic move based on last hit position----------
 function hitMove() {
   strategicHit = compHitPosition + (direction * successfulHits)
   if(!hitSuccess){
@@ -328,8 +372,8 @@ function hitMove() {
       hitMove()
     } else if($grid1.eq(strategicHit).hasClass('boat')){
       console.log('computer hit successfully')
+      // if move was sucessful
       compHitBoat()
-      // if strategic hit has a move
     } else if ($grid1.eq(strategicHit).hasClass('hit')){
       console.log('You have already hit here')
       updateDirection()
@@ -365,7 +409,6 @@ function hitMove() {
       boatEndDirection()
     }
   }
-  checkForWin()
   playerTurn = true
 }
 
@@ -376,14 +419,14 @@ function compHitBoat(){
   successfulHits++
   hitSuccess = true
   checkForSink(false)
-  if($grid1.eq(strategicHit).hasClass('sunk')){
-    endStrategicHit()
-  }
+  // **************************
+  if($grid1.eq(strategicHit).hasClass('sunk')) endStrategicHit()
 }
 
-// functiion to check if element is off board
+// functiion to check if proposed element is off board
 function onBoardCondition(element) {
   if(element < 0 || element >= boardWidth * boardWidth){
+    // *********************
     return true
   }
   if(((compHitPosition % boardWidth === 0) && (direction === -1)) || ((compHitPosition % boardWidth === (boardWidth - 1)) && (direction === 1))){
@@ -393,7 +436,7 @@ function onBoardCondition(element) {
   }
 }
 
-// function to change direction
+// function to change direction for next move
 function updateDirection(){
   compStrikeIndex = compStrikeIndex.filter(position => position !== direction)
   direction = compStrikeIndex[getRandomNumber(0, compStrikeIndex.length-1)]
@@ -405,7 +448,7 @@ function boatEndDirection(){
   successfulHits = 1
 }
 
-// function to end strategic hit mode following sunking of ship
+// function to end strategic hit mode following sinking of ship
 function endStrategicHit(){
   console.log('computer sunk boat')
   successfulHits = 1
@@ -416,6 +459,7 @@ function endStrategicHit(){
 
 // function to check if new hit for player or computer has sunk ships
 function checkForSink(player) {
+  // ***************
   let boardName
   let sunkBoats
   let boatsMenu
@@ -439,11 +483,15 @@ function checkForSink(player) {
       $audio2.currentTime = 0
       $audio2.loop = false
       $audio2[0].play()
-      $('.overlay').css('display', 'flex')
-      setTimeout(function(){
-        $('.overlay').css('display', 'none')
-      }, 2000)
-      return true
+      checkForWin()
+      // *************************
+      if(!winner){
+        $('.overlay').css('display', 'flex')
+        setTimeout(function(){
+          $('.overlay').css('display', 'none')
+        }, 2000)
+        return true
+      }
     }
   })
 }
@@ -457,60 +505,20 @@ function checkForWin(){
     displayWinner('computer')
   }
 }
+
 // function to display winner of game
 function displayWinner(won){
   let text
+  // *********************
   if(won === 'computer'){
-    text ='You lost this time! Click reset button below to play again...'
+    text ='You lost this time! Click reset button above to play again...'
   } else {
-    text = 'You won! Click reset button below to play again...'
+    text = 'You won! Click reset button above to play again...'
   }
-  displayAlertBox(text)
-  $('.game-board').addClass('winner')
-  $resultDisplay.show()
-  winner = true
-}
-// function to update alert box with message
-function displayAlertBox(string){
-  $popUp.text(`${string}`)
+  $popUp.text(`${text}`)
   $('.overlay').css('display', 'flex')
-  setTimeout(function(){
-    $('.overlay').css('display', 'none')
-  }, 2000)
-}
-
-function startGame(){
-  clearBoard()
-  $selectorButtons.show()
-  $resetButton.hide()
-  $resultDisplay.hide()
-  $computerGame.hide()
-  $inPlayPrompt.show()
-  $playerPrompt.show()
-  $instructions.hide()
-  $type.removeClass('selected-boat')
-  $type.removeClass('placed')
-  $('.computer-ships > div').removeClass('sunk')
-  $('.boat-cats > div').removeClass('sunk')
-  boats = boatsTemplate.map(boat => Object.assign({}, boat))
-  gameInPlay = false
-  playerTurn = false
-  playerTotalHits = 0
-  compTotalHits = 0
-  board = ''
-  compHitPosition = 0
-  winner = false
-  nextMove = 0
-  selectedBoat = ''
-  successfulHits = 1
-  hitShip = false
-  hitSuccess = false
-  compStrikeIndex = [1, boardWidth, -1, -boardWidth]
-}
-
-function clearBoard(){
-  $grid1.removeClass()
-  $grid2.removeClass()
+  $('.game-board').addClass('winner')
+  winner = true
 }
 
 function init(){
@@ -565,4 +573,5 @@ function init(){
   $directionButton.on('click', toggleDirection)
   $resetButton.on('click', startGame)
   $instructionButtons.on('click',instructionsToggle)
+  $(document).on('keypress', rotateShip)
 }
