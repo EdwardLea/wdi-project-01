@@ -91,7 +91,6 @@ let $playerPrompt
 let $inPlayPrompt
 let $audio
 let $audio2
-
 let $grid1
 let $grid2
 
@@ -283,7 +282,7 @@ function addBoat(boatIndex, type, direction, player, clicked){
 }
 
 // validation function to check if selected element is acceptable placement
-function selectionValidation (boatArray, board, boatLength, player){
+function selectionValidation (boatArray, board, boatLength){
   // check boat array vertical conditions
   if((boatArray.some(boat => boat < 0 || boat > ((boardWidth * boardWidth)-1)))){
     return false
@@ -313,6 +312,7 @@ function readyToPlay() {
   }
 }
 
+// function to start game once the Play button has been clicked by the player
 function inPlay(){
   if($('.player-board > .boat').length !== 17){
     displayAlertBox('Not enough boats placed!', 2)
@@ -377,7 +377,6 @@ function checkForHit(e){
   } else {
     $inPlayPrompt.hide(500)
     const cell = $grid2.index($(e.target))
-    // check if class hit already added
     if($grid2.eq(cell).hasClass('hit') || $grid2.eq(cell).hasClass('miss')){
       return
     }
@@ -463,6 +462,7 @@ function hitMove() {
   playerTurn = true
 }
 
+// function to change classes of successful elements and update next move criteria.
 function compHitBoat(){
   $grid1.eq(strategicHit).removeClass('boat')
   $grid1.eq(strategicHit).addClass('hit')
@@ -473,7 +473,7 @@ function compHitBoat(){
   if($grid1.eq(strategicHit).hasClass('sunk')) endStrategicHit()
 }
 
-// functiion to check if proposed element is off board
+// function to check if proposed element is off board
 function onBoardCondition(element) {
   if(element < 0 || element >= boardWidth * boardWidth) return true
   if(((compHitPosition % boardWidth === 0) && (direction === -1)) || ((compHitPosition % boardWidth === (boardWidth - 1)) && (direction === 1))){
@@ -483,7 +483,7 @@ function onBoardCondition(element) {
   }
 }
 
-// function to change direction for next move
+// function to change direction for next move based on unsucessful hit
 function updateDirection(){
   compStrikeIndex = compStrikeIndex.filter(position => position !== direction)
   direction = compStrikeIndex[getRandomNumber(0, compStrikeIndex.length-1)]
@@ -512,7 +512,6 @@ function endStrategicHit(){
 
 // function to check if new hit for player or computer has sunk ships
 function checkForSink(player) {
-  // ***************
   let boardName
   let sunkBoats
   let boatsMenu

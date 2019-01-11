@@ -17,7 +17,7 @@ body{
   margin: 0;
 }
 
-button {
+button{
   width: 150px;
   height: 50px;
   border: none;
@@ -36,7 +36,7 @@ p{
 }
 
 header{
-  h1 {
+  h1{
     color: $lightblue;
     background: $darkblue;
     margin: 0;
@@ -56,7 +56,7 @@ header{
   }
 }
 
-.game-board {
+.game-board{
   display: flex;
   position: relative;
   justify-content: space-around;
@@ -67,7 +67,7 @@ header{
     perspective: 1000px;
   }
   .player-area{
-    div.player-input-area {
+    div.player-input-area{
       display: flex;
       .selectors{
         display: flex;
@@ -113,7 +113,7 @@ header{
   background: $lightblue;
 }
 
-.computer-board {
+.computer-board{
   cursor: cell;
 }
 
@@ -126,12 +126,12 @@ header{
   background: #bbb;
 }
 
-.computer-board, .player-board {
+.computer-board, .player-board{
   width: 500px;
   height: 500px;
   display: flex;
   flex-wrap: wrap;
-  > div {
+  > div{
     width: 10%;
     height: 10%;
     background: $blue;
@@ -152,7 +152,7 @@ header{
   }
 }
 
-.boat-type {
+.boat-type{
   flex-grow: 1;
   &.selected-boat{
     background: $darkblue;
@@ -191,11 +191,11 @@ header{
   }
 }
 
-.computer-ships {
+.computer-ships{
   margin-top: 10px;
   display: flex;
   flex-direction: row;
-  div {
+  div{
     height: 50px;
     width: 100px;
     display:flex;
@@ -214,7 +214,7 @@ header{
       }
     }
   }
-  div.sunk {
+  div.sunk{
     background: $green;
     transition: background 2s;
     .label{
@@ -222,7 +222,7 @@ header{
       transition: color 2s;
 
     }
-    .image {
+    .image{
       div {
         background: $green;
       }
@@ -230,7 +230,7 @@ header{
   }
 }
 
-.boat-cats {
+.boat-cats{
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
@@ -240,7 +240,7 @@ header{
     display: flex;
     flex-direction: column;
   }
-  .sunk {
+  .sunk{
     background: $red;
     opacity: 1;
     .image{
@@ -251,7 +251,6 @@ header{
   }
 }
 
-// used to give an alert to player
 .important{
   animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
   transform: translate3d(0, 0, 0);
@@ -263,7 +262,7 @@ header{
   cursor: default;
 }
 
-.boat-cats > div, {
+.boat-cats > div{
   cursor: grab;
 }
 
@@ -271,8 +270,7 @@ header{
   cursor: grabbing;
 }
 
-.pulse {
-
+.pulse{
   cursor: pointer;
   box-shadow: 0 0 0 rgba(25,11,4, 0.4);
   animation: pulse 2s infinite;
@@ -287,7 +285,7 @@ footer{
   }
 }
 
-@keyframes shake {
+@keyframes shake{
   10%, 90% {
     transform: translate3d(-0.5px, 0, 0);
   }
@@ -305,7 +303,7 @@ footer{
   }
 }
 
-@keyframes shakeGame {
+@keyframes shakeGame{
   10%, 90% {
     transform: translate3d(-2px, 0, 0);
   }
@@ -323,9 +321,9 @@ footer{
   }
 }
 
-@keyframes pulse {
+@keyframes pulse{
   0% {
-    box-shadow: 0 0 0 0 rgba(25,11,4, 0.6);
+    box-shadow: 0 0 0 0 rgba(25,11,4, 0.7);
   }
   70% {
       box-shadow: 0 0 0 20px rgba(25,11,4, 0);

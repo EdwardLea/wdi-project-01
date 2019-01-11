@@ -1,55 +1,44 @@
-# WDI-Project1
+# WDI-Project 1
 # General Assembly Project 1 : Simple front-end game
 
-## Goal: To create a single page game
+## Goal: To create a simple front-end game
 ### Timeframe
 7 days
 
 ## Technologies used
 
-* JavaScript (ES6) + jQuery
-* HTML5 + HTML5 Audio
+* JavaScript (ES6) & jQuery
+* HTML5 & HTML5 Audio
 * CSS, CSS Animation & SCSS
 * GitHub
 
 ## My Game - Battleships
 
-
-
-You can find a hosted version here ----> [edwardlea.github.io/project-01](https://edwardlea.github.io/project-01)
+A hosted version of the game can be found here ----> [edwardlea.github.io/project-01](https://edwardlea.github.io/project-01)
 
 ### Game overview
-Battleships is a one player game played against the computer. Following the placement of the player's and computer's fleet the aim of the game is to find the location of the other player's ships. The first to find all five ships wins the game.
-
-
-
-
-### Controls
-- Submarine movements: ← ↑ → ↓ keys
-- Start game: "Start" button or pressing "D"
-- End game: "End Game" button or pressing "S"
-- Toggle mute: Speaker Icon or pressing "Q"
+Battleships is a one player game played against the computer. Following the placement of the player's and computer's board fleet on the board, the aim of the game is to find the location of the other player's ships to sink them. The first to find all five ships wins the game.
 
 ### Game Instructions
-1. The game starts with the player positioning all five ships on the grid by clicking on the boats and positioning on grid. The orientation of the boat can be changed by click the Vertical/Horizontal button or using spacebar.
+1. The game starts with the player positioning all five ships on the grid by clicking on the ships and positioning on grid. The orientation of the ship can be changed by click the Vertical/Horizontal button or using spacebar.
 
 ![screenshot - Placement of ships](https://user-images.githubusercontent.com/39096986/51031907-01bdbb80-1596-11e9-9362-0d82b07aae44.png)
 
-2. Once all boats have been positioned the Play button will appear and can be clicked to go into battle with the computer.
+2. Once all ships have been positioned on the grid the play button will appear, this can be clicked to go into battle with the computer.
 
-![screenshot - ](https://user-images.githubusercontent.com/39096986/51031879-eb176480-1595-11e9-976e-ca95307c13fd.png)
+![screenshot - Start Play](https://user-images.githubusercontent.com/39096986/51031879-eb176480-1595-11e9-976e-ca95307c13fd.png)
 
-3. Points are gained when the submarine is moved into a fish or other marine life. This 'captures' the specimen and points are gained. The fishes are randomly spawned and each type of fish has different movement patterns. Different types of fish are spawned at different levels and at different probabilities. Generally the fish with higher score values are only spawned at the lower depths and spawned less frequently.
+3. The player must try to locate the computer's ships by clicking on the righthand grid. The click will return a result of hit(red) or miss(light blue). If the hit is the last remaining un-hit part of the ship the ship will be sunk shown by a dark blue on the grid. Sink ships are indicated below the retrospective grids.
 
-![screenshot - Fish types](https://user-images.githubusercontent.com/40343797/45220971-e53c0a80-b2a7-11e8-9942-714db52793d9.png)
+![Screenshot - Play Mode](https://user-images.githubusercontent.com/39096986/51035269-5b77b300-15a1-11e9-82ca-d8dc0051c88f.png)
 
-4. If the submarine moves into an underwater mine, the mine will explode. This deducts an amount from your remaining Air Supply.
+4. Once the player has made their guess the computer will then pick a position on the player's grid. Again the result will return a hit or miss and check for any sunk ships. Play will continue to be passed between the player and computer.
 
-![screenshot - Mines](https://user-images.githubusercontent.com/40343797/45220908-b4f46c00-b2a7-11e8-9460-2a4dee40d0ae.png)
+![Screenshot - Mid way through game](https://user-images.githubusercontent.com/39096986/51035605-6bdc5d80-15a2-11e9-9223-7927e319575f.png)
 
-5. Your Air Supply is shown in the air tank on the left of the screen. You must return to the surface before the Air Supply runs out. If you do not return to the surface before your Air Supply runs out, the game will end and your points will be lost. A beeping sound and flashing Air Supply will warn you when your Air Supply is running low.
+5. The first player to sink all the ships on the opponents board wins the game. The game can be reset using the reset button at any time during the game
 
-![screenshot - End Modal Successful](https://user-images.githubusercontent.com/40343797/45221008-04d33300-b2a8-11e8-999e-62b50286c8ec.png)
+![Screenshot - Win screen](https://user-images.githubusercontent.com/39096986/51034760-b01a2e80-159f-11e9-8a0a-e395434b50f3.png)
 
 ## Process
 
@@ -63,12 +52,14 @@ To improve the computer's ability to sink ships once found a hit function was de
 Styling and usability functionality was then added to enhance the experience for the users. Examples include a reset button to allow the player to start the game again at any time, overlay screen display game updates and alerts to the player and a hover effect of the player's board when placing ships.
 
 ### Challenges
-Creating the logic for the computer's guesses was challenging and required a number of interactions to ensure board and ship edge cases did not affect the logic of the computer's guesses.
+Creating the logic for the computer's guesses was challenging and required a number of iterations to ensure board and ship edge cases did not affect the logic of the computer's guesses. Placing the ships in valid positions only was also a challenge as all the ships had different lengths and hence had different criteria to be a successfully placement.
 
 ### Wins
-The logic used to added ships was able to be reused to for both adding computer boats and player boats, as well as the hover effect on the board before boats were placed.
+The logic used to added ships was able to be reused to for both adding computer ships and player ships, as well as the hover effect on the board before ships were placed. The meant functions could be reused a number of times throughout the various
 
 ## Future features
-The official rules of Battleships do not allow ships to touch when placed. The current game does not take this into account, this could be added in future iterations of the game.
-The logic of the computer selection is only intelligent once a hit has been made. Further functionality could be added before hits are made. For example not selecting random locations where it would be impossible for any of the boats to be positioned.
-A two player version of the game could be created in a play and pass capacity.
+1. The intelligence of the computer's hit becomes less reliable when ships are positioned next to each other. A further iteration to the logic could be added to improve how these cases are handled.
+
+2. The logic of the computer selection is only intelligent once a hit has been made. Further functionality could be added before hits are made. For example not selecting random locations where it would be impossible for any of the ships to be positioned.
+
+3. A two player version of the game could be created in a play and pass capacity.
