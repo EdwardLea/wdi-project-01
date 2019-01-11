@@ -19,9 +19,9 @@
 You can find a hosted version here ----> [edwardlea.github.io/project-01](https://edwardlea.github.io/project-01)
 
 ### Game overview
-Deep Sea Dive is a one person game inspired by the French conservationist and filmmaker Jacques Cousteau. The aim is to capture as many specimen of sea life and return to the surface before the air supply runs out.
+Battleships is a one player game played against the computer. Following the placement of the player's and computer's fleet the aim of the game is to find the location of the other player's ships. The first to find all five ships wins the game.
 
-The player controls the movement of a submarine in order to capture the fish and avoid underwater mines.
+
 
 
 ### Controls
@@ -31,13 +31,13 @@ The player controls the movement of a submarine in order to capture the fish and
 - Toggle mute: Speaker Icon or pressing "Q"
 
 ### Game Instructions
-1. The game begins with a welcome modal introducing the aim of the game. The game is started by clicking on the "Start" button or by pressing "D".
+1. The game starts with the player positioning all five ships on the grid by clicking on the boats and positioning on grid. The orientation of the boat can be changed by click the Vertical/Horizontal button or using spacebar.
 
-![screenshot - Start Modal](https://user-images.githubusercontent.com/40343797/45220826-6777ff00-b2a7-11e8-8511-8a5f00bc0b74.png)
+![screenshot - Placement of ships](https://user-images.githubusercontent.com/39096986/51031907-01bdbb80-1596-11e9-9362-0d82b07aae44.png)
 
-2. Once the game begins, there is short animation of a boat entering onto the screen and the player's submarine appears below the boat. Once the submarine appears, it can be controlled by the player using the ← ↑ → ↓ keys.
+2. Once all boats have been positioned the Play button will appear and can be clicked to go into battle with the computer.
 
-![screenshot - Beginning position](https://user-images.githubusercontent.com/40343797/45220870-8ececc00-b2a7-11e8-804a-c271278a428f.png)
+![screenshot - ](https://user-images.githubusercontent.com/39096986/51031879-eb176480-1595-11e9-976e-ca95307c13fd.png)
 
 3. Points are gained when the submarine is moved into a fish or other marine life. This 'captures' the specimen and points are gained. The fishes are randomly spawned and each type of fish has different movement patterns. Different types of fish are spawned at different levels and at different probabilities. Generally the fish with higher score values are only spawned at the lower depths and spawned less frequently.
 

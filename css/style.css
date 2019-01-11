@@ -204,6 +204,11 @@ header .instructions p {
 .player-board {
   cursor: grabbing; }
 
+.pulse {
+  cursor: pointer;
+  box-shadow: 0 0 0 rgba(25, 11, 4, 0.4);
+  animation: pulse 2s infinite; }
+
 footer {
   margin-top: 80px; }
   footer p {
@@ -231,9 +236,9 @@ footer {
     transform: translate3d(6px, 0, 0); } }
 @keyframes pulse {
   0% {
-    box-shadow: 0 0 0 0 rgba(25, 11, 4, 0.4); }
+    box-shadow: 0 0 0 0 rgba(25, 11, 4, 0.6); }
   70% {
-    box-shadow: 0 0 0 10px rgba(25, 11, 4, 0); }
+    box-shadow: 0 0 0 20px rgba(25, 11, 4, 0); }
   100% {
     box-shadow: 0 0 0 0 rgba(25, 11, 4, 0); } }
 
