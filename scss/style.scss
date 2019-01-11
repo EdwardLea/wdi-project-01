@@ -113,6 +113,10 @@ header{
   background: $lightblue;
 }
 
+.computer-board {
+  cursor: cell;
+}
+
 .computer-board >div.boat{
   // background: #bbb;
   background: $blue;
@@ -172,6 +176,7 @@ header{
   display: flex;
   justify-content: center;
   align-items: center;
+  // cursor: default;
 }
 .image{
   flex-grow: 1;
@@ -215,6 +220,7 @@ header{
     .label{
       color: $lightblue;
       transition: color 2s;
+
     }
     .image {
       div {
@@ -251,6 +257,18 @@ header{
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000px;
+}
+
+.prompt-in-play, .computer-ships{
+  cursor: default;
+}
+
+.boat-cats > div, {
+  cursor: grab;
+}
+
+.player-board{
+  cursor: grabbing;
 }
 
 // .pulse {

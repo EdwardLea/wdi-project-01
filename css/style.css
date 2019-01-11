@@ -83,6 +83,9 @@ header .instructions p {
 .player-board > div.hover {
   background: #FAFAFF; }
 
+.computer-board {
+  cursor: cell; }
+
 .computer-board > div.boat {
   background: #20A4F3; }
 
@@ -191,6 +194,15 @@ header .instructions p {
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000px; }
+
+.prompt-in-play, .computer-ships {
+  cursor: default; }
+
+.boat-cats > div {
+  cursor: grab; }
+
+.player-board {
+  cursor: grabbing; }
 
 footer {
   margin-top: 80px; }

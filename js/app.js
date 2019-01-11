@@ -489,7 +489,8 @@ function updateDirection(){
 // function to change direction once end of boat has been found
 function boatEndDirection(){
   if(boatEnd === true){
-    endStrategicHit()
+    hitSuccess = false
+    successfulHits = 1
   } else {
     boatEnd = true
     direction = -direction
