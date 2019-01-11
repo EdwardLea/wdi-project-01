@@ -23,7 +23,7 @@ let board = ''
 let selectedBoat = ''
 let compStrikeIndex = [1, boardWidth, -1, -boardWidth]
 let direction = compStrikeIndex[getRandomNumber(0, compStrikeIndex.length-1)]
-const orientation = ['vertical','horizontial']
+const orientation = ['vertical','horizontal']
 const boatsTemplate = [{
   name: 'carrier',
   length: 5,
@@ -252,7 +252,7 @@ function addPlayerBoat(e){
 function addBoat(boatIndex, type, direction, player, clicked){
   const boatArray = []
   const boatLength = boats.find(boat => boat.name === type).length
-  if(direction === 'horizontial'){
+  if(direction === 'horizontal'){
     for (let i = 0 ; i < boatLength ; i++){
       boatArray.push(boatIndex + i)
     }
@@ -288,7 +288,7 @@ function selectionValidation (boatArray, board, boatLength, player){
   if((boatArray.some(boat => boat < 0 || boat > ((boardWidth * boardWidth)-1)))){
     return false
   }
-  // check boat array horizontial conditions
+  // check boat array horizontal conditions
   if((boatArray.some(boat => boat % boardWidth === 0) && (boatArray.some(boat => boat % boardWidth === (boardWidth - 1))))){
     return false
   }
@@ -339,11 +339,11 @@ function removeHoverEffect(){
 
 // function to change direction of placing player boats
 function toggleDirection(){
-  if($directionButton.text() === 'Horizontial')  {
+  if($directionButton.text() === 'Horizontal')  {
     $directionButton.text('Vertical')
     $directionButton.css('transform', 'rotate(90deg)')
   } else {
-    $directionButton.text('Horizontial')
+    $directionButton.text('Horizontal')
     $directionButton.css('transform', 'rotate(0deg)')
   }
 }
@@ -435,6 +435,9 @@ function hitMove() {
     } else if ($grid1.eq(strategicHit).hasClass('miss')){
       updateDirection()
       hitMove()
+    }else if(compStrikeIndex.length === 0){
+      endStrategicHit()
+      computerPlay()
     } else {
       updateDirection()
       $grid1.eq(strategicHit).addClass('miss')
