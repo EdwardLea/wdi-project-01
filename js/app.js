@@ -17,6 +17,7 @@ let compTotalHits = 0
 let compHitPosition = 0
 let strategicHit = 0
 let nextMove = 0
+let boatEnd = false
 let successfulHits = 1
 let board = ''
 let selectedBoat = ''
@@ -487,13 +488,19 @@ function updateDirection(){
 
 // function to change direction once end of boat has been found
 function boatEndDirection(){
-  direction = -direction
-  successfulHits = 1
+  if(boatEnd === true){
+    endStrategicHit()
+  } else {
+    boatEnd = true
+    direction = -direction
+    successfulHits = 1
+  }
 }
 
 // function to end strategic hit mode following sinking of ship
 function endStrategicHit(){
   successfulHits = 1
+  boatEnd = false
   hitShip = false
   hitSuccess = false
   compStrikeIndex = [1, boardWidth, -1, -boardWidth]
