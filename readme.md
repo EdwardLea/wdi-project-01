@@ -63,7 +63,6 @@ Being able to reuse functions multiple times made the code easier to understand 
 
 ![Screenshot - Code snip](https://user-images.githubusercontent.com/39096986/55058875-399cb100-5065-11e9-87a1-b68861534a5f.png)
 
-
 ## Future features
 1. The intelligence of the computer's hit becomes less reliable when ships are positioned next to each other. A further iteration to the logic could be added to improve how these cases are handled.
 
